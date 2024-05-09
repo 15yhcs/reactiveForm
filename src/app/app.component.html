@@ -1,30 +1,61 @@
 <div class="container">
   <div class="row">
     <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
-      <form>
-        <div class="form-group">
-          <label for="username">Username</label>
-          <input
-            type="text"
-            id="username"
-            class="form-control">
-        </div>
-        <div class="form-group">
-          <label for="email">email</label>
-          <input
-            type="text"
-            id="email"
-            class="form-control">
-        </div>
+      <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+        <div formGroupName="userGroup">
+            <div class="form-group">
+              <label for="username">Username</label>
+              <input
+                type="text"
+                id="username"
+                formControlName="username"
+                class="form-control">
+            </div>
+            <span *ngIf="!signupForm.get('userGroup.username').valid && signupForm.get('userGroup.username').touched" 
+                  class="help-block"> Please Enter A Valid Username</span>
+            <div class="form-group">
+              <label for="email">email</label>
+              <input
+                type="text"
+                id="email"
+                formControlName="email"
+                class="form-control">
+            </div>
+            <span *ngIf="!signupForm.get('userGroup.email').valid && signupForm.get('userGroup.email').touched" 
+                  class="help-block"> Please Enter A Valid email</span>
+          </div>
+                    
         <div class="radio" *ngFor="let gender of genders">
           <label>
             <input
               type="radio"
-              [value]="gender">{{ gender }}
+              [value]="gender"
+              formControlName="gender">{{ gender }}
           </label>
         </div>
+        <div formArrayName="hobbies">
+          <h4> Your Hobbies</h4>
+          <button 
+              class="btn btn-default" 
+              type="button"
+              (click)="addHobbies()"> add
+          </button>
+          <div class="form-group" *ngFor="let item of getControls(); let i = index ">
+              <input type="text" class="form-control" [formControlName]="i">
+          </div>
+
+
+        </div>
+        <span *ngIf="!signupForm.get('gender').valid && signupForm.get('gender').touched" 
+              class="help-block"> Please Enter A Valid gender</span>
         <button class="btn btn-primary" type="submit">Submit</button>
       </form>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+      <app-reactive-practice-comp></app-reactive-practice-comp>
     </div>
   </div>
 </div>
